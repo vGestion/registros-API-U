@@ -12,23 +12,39 @@ export class UserService {
     @InjectModel(User.name) private readonly UserModel: Model<UserDocument>,
   ) { }
 
-  create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto):Promise<User> {
     return this.UserModel.create(createUserDto);
   }
 
-  findAll() {
+  async findAll(): Promise<User[]> {
     return this.UserModel.find().exec();
   }
 
-  findOne(id: string) {
+  async findOne(id: string):Promise<User> {
     return this.UserModel.findOne({ _id: id }).exec();
   }
 
-  update(id: string,updateUserDto: UpdateUserDto) {
+  async update(id: string,updateUserDto: UpdateUserDto):Promise<User> {
     return this.UserModel.findOneAndUpdate(updateUserDto).exec();
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     return this.UserModel.findByIdAndRemove({ _id: id }).exec();
+  }
+
+  async deleteCertificate(id: string, evento: string): Promise<User> {
+    return this.UserModel.findOneAndUpdate(
+      { _id: id },
+      { $pull: { certificates: { event: evento } } },
+      { new: true }
+    ).exec();
+  }
+
+  async addCertificate(id: string, certificate: {event:string,url:string}): Promise<User> {
+    return this.UserModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { certificates: certificate } },
+      { new: true }
+    ).exec();
   }
 }
