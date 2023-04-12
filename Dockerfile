@@ -15,8 +15,8 @@ RUN npm install
 EXPOSE 3005
 
 # Establecer las variables de entorno
-ENV PORT=3005
-ENV DB_URL=mongodb://mongodb:27017/Datalat
+ENV PORT_U=3005
+ENV DB_URL_U=mongodb://mongodb:27017/Datalat
 
 # Iniciar la aplicación
 CMD ["npm", "run", "start"]

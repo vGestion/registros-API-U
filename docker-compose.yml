@@ -14,7 +14,20 @@ services:
     command: npm run start
     environment:
       DB_URL: mongodb://mongodb:27017/Datalat
-      PORT: 3005
+      PORT_U: 3005
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+
+  api: 
+    image: visualizacionesdatalat/backend-registros
+    ports:
+      - 3001:3001
+    command: npm run start
+    environment:
+      DB_URL: mongodb://mongodb:27017/Datalat
+      PORT: 3001
     env_file:
       - .env
     depends_on:

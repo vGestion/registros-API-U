@@ -9,7 +9,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(process.env.DB_URL),
+    MongooseModule.forRoot(process.env.DB_URL_U),
     UserModule],
   controllers: [AppController],
   providers: [AppService],
