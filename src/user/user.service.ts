@@ -4,6 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserDocument } from './schema/user.schema';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,9 @@ export class UserService {
   ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
+    const salt = await bcrypt.genSalt();
+    const hashPassword = await bcrypt.hash(createUserDto.password, salt);
+    createUserDto.password = hashPassword;
     return this.UserModel.create(createUserDto);
   }
 
@@ -51,7 +55,8 @@ export class UserService {
   async login(id: string, password: string): Promise<Boolean> {
     var usuario = await this.findOne(id);
     if (usuario) {
-      if (usuario.password === password) {
+      let correcto = await bcrypt.compare(password, usuario.password);
+      if (correcto) {
         return true;
       } else {
         return false;
@@ -59,5 +64,12 @@ export class UserService {
     }else{
       return false;
     }
+  }
+
+  async changePassword(id: string, updateUserDto: UpdateUserDto):Promise<User>{
+    const salt = await bcrypt.genSalt();
+    const newPassword = await bcrypt.hash(updateUserDto.password, salt);
+    updateUserDto.password = newPassword;
+    return this.UserModel.findOneAndUpdate(updateUserDto).exec();
   }
 }
