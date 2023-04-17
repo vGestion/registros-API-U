@@ -41,4 +41,9 @@ export class UserController {
   addUser(@Body() certificate: {event:string,url:string}, @Param('id') id: string){
     return this.userService.addCertificate(id,certificate)
   }
+
+  @Post('/login')
+  login(@Body() registro: {id: string, password: string}){
+    return this.userService.login(registro.id, registro.password)
+  }
 }

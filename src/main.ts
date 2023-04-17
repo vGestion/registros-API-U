@@ -18,6 +18,8 @@ async function bootstrap() {
   // La ruta en que se sirve la documentación
   SwaggerModule.setup('docs', app, document);
 
+  app.enableCors();
+
   await app.listen(process.env.PORT_U);
 }
 bootstrap();

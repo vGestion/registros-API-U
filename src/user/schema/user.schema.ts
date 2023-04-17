@@ -36,6 +36,9 @@ export class User {
   nationality: string;
 
   @Prop()
+  rol: string;
+
+  @Prop()
   certificates:[
     {
       event: string;

@@ -12,7 +12,7 @@ export class UserService {
     @InjectModel(User.name) private readonly UserModel: Model<UserDocument>,
   ) { }
 
-  async create(createUserDto: CreateUserDto):Promise<User> {
+  async create(createUserDto: CreateUserDto): Promise<User> {
     return this.UserModel.create(createUserDto);
   }
 
@@ -20,11 +20,11 @@ export class UserService {
     return this.UserModel.find().exec();
   }
 
-  async findOne(id: string):Promise<User> {
+  async findOne(id: string): Promise<User> {
     return this.UserModel.findOne({ _id: id }).exec();
   }
 
-  async update(id: string,updateUserDto: UpdateUserDto):Promise<User> {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     return this.UserModel.findOneAndUpdate(updateUserDto).exec();
   }
 
@@ -40,11 +40,24 @@ export class UserService {
     ).exec();
   }
 
-  async addCertificate(id: string, certificate: {event:string,url:string}): Promise<User> {
+  async addCertificate(id: string, certificate: { event: string, url: string }): Promise<User> {
     return this.UserModel.findOneAndUpdate(
       { _id: id },
       { $push: { certificates: certificate } },
       { new: true }
     ).exec();
+  }
+
+  async login(id: string, password: string): Promise<Boolean> {
+    var usuario = await this.findOne(id);
+    if (usuario) {
+      if (usuario.password === password) {
+        return true;
+      } else {
+        return false;
+      }
+    }else{
+      return false;
+    }
   }
 }

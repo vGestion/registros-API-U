@@ -33,10 +33,12 @@ export class CreateUserDto {
   nationality: string;
 
   @ApiProperty()
+  rol: string;
+
+  @ApiProperty()
   certificates:[
     {
       event: string;
       url: string;
     }]
-  
 }
