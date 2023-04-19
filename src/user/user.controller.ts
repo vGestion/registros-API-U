@@ -46,4 +46,9 @@ export class UserController {
   login(@Body() registro: {id: string, password: string}){
     return this.userService.login(registro.id, registro.password)
   }
+
+  @Post('/loginAuth')
+  loginAuth(@Body() registro: {id: string, password: string}){
+    return this.userService.loginAuth(registro.id, registro.password)
+  }
 }

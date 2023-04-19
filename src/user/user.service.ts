@@ -72,4 +72,19 @@ export class UserService {
     updateUserDto.password = newPassword;
     return this.UserModel.findOneAndUpdate(updateUserDto).exec();
   }
+
+
+  async loginAuth(id: string, password: string):Promise<User>{
+    var usuario = await this.findOne(id);
+    if (usuario) {
+      let correcto = await bcrypt.compare(password, usuario.password);
+      if (correcto) {
+        return usuario;
+      } else {
+        return null;
+      }
+    }else{
+      return null;
+    }
+  }
 }
