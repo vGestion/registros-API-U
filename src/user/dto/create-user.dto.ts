@@ -36,6 +36,9 @@ export class CreateUserDto {
   rol: string;
 
   @ApiProperty()
+  email: string;
+
+  @ApiProperty()
   certificates:[
     {
       event: string;

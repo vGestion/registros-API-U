@@ -39,6 +39,9 @@ export class User {
   rol: string;
 
   @Prop()
+  email: string;
+
+  @Prop()
   certificates:[
     {
       event: string;
