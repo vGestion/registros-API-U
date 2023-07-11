@@ -74,17 +74,19 @@ export class UserService {
   }
 
 
-  async loginAuth(id: string, password: string):Promise<User>{
+  async loginAuth(id: string, password: string){
     var usuario = await this.findOne(id);
+    //var usuario = await this.findOne("chio.gonzalezt@gmail.com");
     if (usuario) {
       let correcto = await bcrypt.compare(password, usuario.password);
+      //let correcto = await password;
       if (correcto) {
         return usuario;
       } else {
-        return null;
+        return "Password";
       }
     }else{
-      return null;
+      return "User";
     }
   }
 

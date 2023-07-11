@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFile, Res, HttpStatus, HttpCode } from '@nestjs/common';
 import { UserService } from './user.service';
 import { S3Service } from '../S3/S3Service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -51,13 +51,23 @@ export class UserController {
   }
 
   @Post('/loginAuth')
-  loginAuth(@Body() registro: { id: string, password: string }) {
-    return this.userService.loginAuth(registro.id, registro.password)
+  @HttpCode(HttpStatus.NOT_FOUND)
+  async loginAuth(@Body() registro: { id: string, password: string }, @Res() response) {
+    //console.log(await this.userService.loginAuth(registro.id, registro.password))
+    var respuesta = await this.userService.loginAuth(registro.id, registro.password);
+    console.log(respuesta)
+    if (respuesta == "Password") {
+      return await response.status(HttpStatus.NOT_FOUND).send('Contraseña incorrecta');
+    } else if(respuesta == "User") {
+      return await response.status(HttpStatus.NOT_FOUND).send('Usuario no encontrado');
+    }else{
+      return await response.status(HttpStatus.OK).send(this.userService.loginAuth(registro.id, registro.password));
+    }
   }
 
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
-  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() folder: {id_evento:string}) {
+  uploadFile(@UploadedFile() file: Express.Multer.File, @Body() folder: { id_evento: string }) {
     return this.s3service.uploadFile(file, folder.id_evento);
   }
 }
