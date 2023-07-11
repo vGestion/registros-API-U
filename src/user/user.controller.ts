@@ -53,15 +53,15 @@ export class UserController {
   @Post('/loginAuth')
   @HttpCode(HttpStatus.NOT_FOUND)
   async loginAuth(@Body() registro: { id: string, password: string }, @Res() response) {
-    //console.log(await this.userService.loginAuth(registro.id, registro.password))
     var respuesta = await this.userService.loginAuth(registro.id, registro.password);
-    console.log(respuesta)
+    console.log(respuesta);
+    //console.log(respuesta)
     if (respuesta == "Password") {
       return await response.status(HttpStatus.NOT_FOUND).send('Contraseña incorrecta');
     } else if(respuesta == "User") {
       return await response.status(HttpStatus.NOT_FOUND).send('Usuario no encontrado');
     }else{
-      return await response.status(HttpStatus.OK).send(this.userService.loginAuth(registro.id, registro.password));
+      return await response.status(HttpStatus.OK).send(respuesta);
     }
   }
 

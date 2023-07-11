@@ -79,7 +79,7 @@ export class UserService {
     //var usuario = await this.findOne("chio.gonzalezt@gmail.com");
     if (usuario) {
       let correcto = await bcrypt.compare(password, usuario.password);
-      //let correcto = await password;
+      //let correcto = true;
       if (correcto) {
         return usuario;
       } else {
@@ -89,7 +89,6 @@ export class UserService {
       return "User";
     }
   }
-
 
   async loadCertificate(id: string, file: File){
     
