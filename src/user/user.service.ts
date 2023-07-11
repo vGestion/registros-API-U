@@ -87,4 +87,10 @@ export class UserService {
       return null;
     }
   }
+
+
+  async loadCertificate(id: string, file: File){
+    
+
+  }
 }
